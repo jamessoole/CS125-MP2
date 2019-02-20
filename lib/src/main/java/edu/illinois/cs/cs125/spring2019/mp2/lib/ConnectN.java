@@ -1,5 +1,7 @@
 package edu.illinois.cs.cs125.spring2019.mp2.lib;
 
+import com.sun.corba.se.impl.orbutil.ObjectStreamClassUtil_1_3;
+
 /**
  * our class bois.
  */
@@ -15,16 +17,15 @@ class ConnectN {
     /** minimum width. */
     private static final int MIN_WIDTH = 6;
 
-    /**
-     * @param width
+    /** th width.
      */
     private int width;
     /**
-     * @param height
-     */
+     * the height.
+     * */
     private int height;
     /**
-     * @param nValue
+     * the nvalue.
      */
     private int nValue;
 
@@ -69,9 +70,9 @@ class ConnectN {
      * @return ConnectN
      **/
     public static ConnectN create(final int width, final int height, final int n) {
-        if (width == null || height == null || n == null) {
+        /*if (width == null || height == null || n == null) {
             return null;
-        }
+        }*/
         ConnectN board = new ConnectN();
         return board;
     }
@@ -83,38 +84,46 @@ class ConnectN {
      * @param n n value.
      * @return ConnectN makes many instances of connectN.
      **/
-    public static ConnectN[] createMany(final int number, final int width, final int height, final int n) {
+    private static ConnectN[] createMany(final int number, final int width, final int height, final int n) {
         //like above, but many instances
+        return null;
     }
 
-    public static boolean compareBoards(Object o, ConnectN board) {
+    /**
+     * compares boards.
+     * @param firstBoard idk yet.
+     * @param secondBoard the board.
+     * @return idk yet.
+     */
+    private static boolean compareBoards(final ConnectN firstBoard, final ConnectN secondBoard) {
+        return true;
     }
     // 2 compare board, one with 2 input, one with any number o finputs
 
 
 
     /**
-     * @param setWidth
+     * @param setWidth this set the width.
      */
-    public boolean setWidth(final int setWidth) {
+    private void setWidth(final int setWidth) {
         // fails if inputs invalid
         width = setWidth;
     }
     /**
-     * @param setHeight
+     * @param setHeight sets the height.
      */
-    public boolean setHeight(final int setHeight) {
+    private void setHeight(final int setHeight) {
         // fails if inputs invalid
         //if
         height = setHeight;
     }
     /**
-     * @param setN
+     * @param setN sste n yo.
      */
-    public boolean setN(final int setN) {
+    private void setN(final int setN) {
         // fails if inputs invalid
         if (setN < MIN_N || setN > MAX_WIDTH - 1 || setN > MAX_HEIGHT - 1) {
-            continue; // do nothing
+            System.out.println("hey");
         }   else {
             nValue = setN;
         }
@@ -144,9 +153,8 @@ class ConnectN {
      * @param player the player
      * @param setX column value
      * @param setY row value
-     * @return smthn
      */
-    public boolean setBoardAt(final Player player, final int setX, final int setY) {
+    public void setBoardAt(final Player player, final int setX, final int setY) {
 
     }
 
@@ -154,31 +162,33 @@ class ConnectN {
     /**
      *
      * @param player the player
-     * @param setX column value
-     * @return somthn
+     * @param setX column value.
      */
-    public boolean setBoardAt(Player player, int setX) {
-
+    public void setBoardAt(final Player player, final int setX) {
+        int x;
     }
 
 
     /**
      * @return smthn
      */
-    public Player[][] getBoard() {
+    private Player[][] getBoard() {
+        return null;
     }
 
     /**
      * @param getX column value
      * @param getY row value
-     * @return
+     * @return the board?
      */
     public Player getBoardAt(final int getX, final int getY) {
+        return null;
     }
 
     /**
      * @return who won
      */
     public Player getWinner() {
+        return null;
     }
 }
