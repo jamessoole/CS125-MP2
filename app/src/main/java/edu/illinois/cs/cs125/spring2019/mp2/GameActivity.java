@@ -1,5 +1,5 @@
 package edu.illinois.cs.cs125.spring2019.mp2;
-
+//Player[][] board = newPlayer[width][height]
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
