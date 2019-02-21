@@ -1,11 +1,11 @@
 package edu.illinois.cs.cs125.spring2019.mp2.lib;
 
-import com.sun.corba.se.impl.orbutil.ObjectStreamClassUtil_1_3;
+//import com.sun.corba.se.impl.orbutil.ObjectStreamClassUtil_1_3;
 
 /**
  * our class bois.
  */
-class ConnectN {
+public class ConnectN {
     /** maximum width. */
     private static final int MAX_WIDTH = 16;
     /** maximum height. */
@@ -30,7 +30,7 @@ class ConnectN {
     /** new board with height, width, and n initialized.
      * Note that this method should not reject invalid values.
      * attempts to set the width, height, or N value to invalid ~.
-     * value should lead to them being uninitialized.
+     * value should lead to them being uninitialized. (acheived by setters)
      *
      * For example, new ConnectN(1, 10, 4) should return a ConnectN game with width=0,.
      * height=10, and N=0, since 1 is an invalid width (too small) and N cannot
@@ -50,6 +50,7 @@ class ConnectN {
     /** new board with nothing initialized. */
     ConnectN() {
         board = new Player[0][0];
+        nValue = 0;
     }
 
     /** new board with width and height initialized.
@@ -64,24 +65,36 @@ class ConnectN {
     /** new board with dimensions and n of another board.
      * @param otherBoard   another board of same shape and n value. **/
     ConnectN(final ConnectN otherBoard) {
-        board = new Player[otherBoard.width][otherBoard.height]; //does this work??
+        width = otherBoard.width;
+        height = otherBoard.height;
+        board = new Player[width][height];
         nValue = otherBoard.nValue;
     }
 
 
     /**
-     * creates a new board.
+     * Class method to create a new ConnectN board.
+     * Unlike the class constructor, static methods can return null on failure.
+     * Sometimes these methods are referred to as static factory methods.
+     * This method should return null if its arguments are invalid.
+     * Otherwise, it should return a new ConnectN instance.
+     *
+     * Parameters:
      * @param width the width.
      * @param height the height.
      * @param n the n value.
      * @return ConnectN
      **/
     public static ConnectN create(final int width, final int height, final int n) {
-        ConnectN newConnect = new ConnectN(width, height, n);
-        return newConnect;
+        //check stuffff
+
+        return new ConnectN(width, height, n);
     }
 
     /**
+     * Creates multiple new ConnectN instances.
+     * Like create(), createMany should return null if the parameters are invalid.
+     * Otherwise, it should return an array of newly-created ConnectN instances.
      * @param number number of instances created.
      * @param width the width.
      * @param height the height.
@@ -90,6 +103,8 @@ class ConnectN {
      **/
     private static ConnectN[] createMany(final int number, final int width, final int height, final int n) {
         //like above, but many instances
+        //initi array of size n
+        // add each obard to that array
         for (int i = 0; i < number; i++) {
             ConnectN newBoard = new ConnectN(width, height, n);
         }
@@ -97,7 +112,11 @@ class ConnectN {
     }
 
     /**
-     * compares boards.
+     * This method should compare two ConnectN boards. Two boards are equal if:
+     * they have the same dimensions
+     * they have the same n value
+     * they have tiles by the same players in the same position
+     * You can use the Player.equals method to compare two players.
      * @param firstBoard idk yet.
      * @param secondBoard the board.
      * @return idk yet.
@@ -105,12 +124,10 @@ class ConnectN {
     public static boolean compareBoards(final ConnectN firstBoard, final ConnectN secondBoard) {
         if (firstBoard.width == secondBoard.width && firstBoard.height == secondBoard.height) {
             if (firstBoard.nValue == secondBoard.nValue) {
-                for (int i = 0; i < width; i++) {
-                    for (int j = 0; j < height; j++) {
-                        if (firstBoard[i][j] == secondBoard[i][j]) {
+                for (int i = 0; i < firstBoard.width; i++) {
+                    for (int j = 0; j < firstBoard.height; j++) {
+                        if (firstBoard.board[i][j].equals(secondBoard.board[i][j])) {
                             return true;
-                            }
-                        }
                     }
                 }
             }
@@ -118,6 +135,23 @@ class ConnectN {
         return false;
     }
     // 2 compare board, one with 2 input, one with any number o finputs
+
+    /** fe.
+     *Compare any number of ConnectN boards.
+     * This methods takes a variadic number of arguments.
+     * It should return true if all the boards are the same.
+     * See the notes on compareBoards(first, second) for a definition of board equality.
+     * @param boards ihwwd.
+     * @return woic.
+     */
+    public static boolean compareBoards(final ConnectN... boards) {
+        for (int i = 0; i < boards.length - 1; i++) {
+            if (!compareBoards(boards[i], boards[i + 1])) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 
