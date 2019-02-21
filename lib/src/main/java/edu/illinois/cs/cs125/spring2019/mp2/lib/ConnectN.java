@@ -19,11 +19,11 @@ public class ConnectN {
 
     /** th width.*/
     private int width;
-    /*** the height.* */
+    /*** the height.*/
     private int height;
     /*** the nvalue.*/
     private int nValue;
-
+    /** the board of type player. */
     private Player[][] board;
 
 
@@ -44,8 +44,6 @@ public class ConnectN {
         nValue = setN;
         board = new Player[width][height];
     }
-
-
 
     /** new board with nothing initialized. */
     ConnectN() {
@@ -86,7 +84,7 @@ public class ConnectN {
      * @return ConnectN
      **/
     public static ConnectN create(final int width, final int height, final int n) {
-        //check stuffff
+        //check stuffff    <------------------------------------
 
         return new ConnectN(width, height, n);
     }
@@ -102,13 +100,12 @@ public class ConnectN {
      * @return ConnectN makes many instances of connectN.
      **/
     private static ConnectN[] createMany(final int number, final int width, final int height, final int n) {
-        //like above, but many instances
-        //initi array of size n
-        // add each obard to that array
+        ConnectN[] myArray = new ConnectN[number];
         for (int i = 0; i < number; i++) {
             ConnectN newBoard = new ConnectN(width, height, n);
+            myArray[i] = newBoard;
         }
-        return null;
+        return myArray;
     }
 
     /**
@@ -128,21 +125,21 @@ public class ConnectN {
                     for (int j = 0; j < firstBoard.height; j++) {
                         if (firstBoard.board[i][j].equals(secondBoard.board[i][j])) {
                             return true;
+                        }
                     }
                 }
             }
         }
         return false;
     }
-    // 2 compare board, one with 2 input, one with any number o finputs
 
-    /** fe.
-     *Compare any number of ConnectN boards.
-     * This methods takes a variadic number of arguments.
+
+    /** Compare any number of ConnectN boards.
+     * This method takes a variadic number of arguments.
      * It should return true if all the boards are the same.
      * See the notes on compareBoards(first, second) for a definition of board equality.
-     * @param boards ihwwd.
-     * @return woic.
+     * @param boards input boards.
+     * @return true if boards r equal.
      */
     public static boolean compareBoards(final ConnectN... boards) {
         for (int i = 0; i < boards.length - 1; i++) {
@@ -161,8 +158,9 @@ public class ConnectN {
      * If the new width would cause the current N value to become invalid,
      * setWidth should reset the current N value to zero.
      * @param setWidth this set the width.
+     * @return boolean true if able to set width.
      */
-    private boolean setWidth(final int setWidth) {
+    private boolean setWidth(final int setWidth)  {
         if (width < MAX_WIDTH && width > MIN_WIDTH) {
             width = setWidth;
             if (setN(nValue) == false) {
@@ -181,6 +179,7 @@ public class ConnectN {
      * If the new height would cause the current N value to become invalid,
      * setHeight should reset the current N value to zero.
      * @param setHeight sets the height.
+     * @return boolean true if able to set height.
      */
     private boolean setHeight(final int setHeight) {
         if (height < MAX_HEIGHT && height > MIN_HEIGHT) {
@@ -204,6 +203,7 @@ public class ConnectN {
      * On a 10x8 board, the minimum is 4 and the maximum is 9.
      * Setting N should never affect the width or the height.
      * @param setN sste n yo.
+     * @return true if able to set n.
      */
     private boolean setN(final int setN) {
         if (setN > MIN_N && (setN < MAX_WIDTH - 1 || setN < MAX_HEIGHT - 1)) {
@@ -241,12 +241,17 @@ public class ConnectN {
 
 
 
+    //STILL TO COMPLETE
 
 
-    /**
+
+
+
+    /** YVUB.
      * @param player the player
      * @param setX column value
      * @param setY row value
+     * @return true if able to set
      */
     public boolean setBoardAt(final Player player, final int setX, final int setY) {
         return false;
@@ -255,8 +260,9 @@ public class ConnectN {
 
     /**
      *
-     * @param player the player
+     * @param player the player.
      * @param setX column value.
+     * @return true if able to set n.
      */
     public boolean setBoardAt(final Player player, final int setX) {
         int x;
@@ -265,7 +271,7 @@ public class ConnectN {
 
 
     /**
-     * @return smthn
+     * @return the board/player array?
      */
     private Player[][] getBoard() {
         //if widht/height exist, retrun board
@@ -276,14 +282,14 @@ public class ConnectN {
     /**
      * @param getX column value
      * @param getY row value
-     * @return the board?
+     * @return the player
      */
     public Player getBoardAt(final int getX, final int getY) {
         return null;
     }
 
     /**
-     * @return who won
+     * @return player who won
      */
     public Player getWinner() {
         return null;
