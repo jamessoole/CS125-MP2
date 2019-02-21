@@ -25,6 +25,8 @@ public class ConnectN {
     private int nValue;
     /** the board of type player. */
     private Player[][] board;
+    /** if game has started */
+    private boolean gameStart = false;
 
 
     /** new board with height, width, and n initialized.
@@ -159,15 +161,14 @@ public class ConnectN {
 
     /**
      * Fails if the width is invalid,
-     * or if the game has already started.  <------------------
+     * or if the game has already started.
      * If the new width would cause the current N value to become invalid,
      * setWidth should reset the current N value to zero.
      * @param setWidth this set the width.
      * @return boolean true if able to set width.
      */
     private boolean setWidth(final int setWidth)  {
-        // this si not righttttttttttt
-        if (!board.equals(board[0][0])) {
+        if (gameStart == true) {
             return false;
         }
         if (width < MAX_WIDTH && width > MIN_WIDTH) {
@@ -184,15 +185,14 @@ public class ConnectN {
 
     /**
      * Fails if the height is invalid,
-     * or if the game has already started. <-------------
+     * or if the game has already started.
      * If the new height would cause the current N value to become invalid,
      * setHeight should reset the current N value to zero.
      * @param setHeight sets the height.
      * @return boolean true if able to set height.
      */
     private boolean setHeight(final int setHeight) {
-        // this si not righttttttttttt
-        if (!board.equals(board[0][0])) {
+        if (gameStart == true) {
             return false;
         }
         if (height < MAX_HEIGHT && height > MIN_HEIGHT) {
@@ -208,8 +208,8 @@ public class ConnectN {
 
 
     /**
-     * N cannot be set after the game has started * <----------------------
-     * N cannot be set before the width or the height  <----------------------
+     * N cannot be set after the game has started.
+     * N cannot be set before the width or the height
      * N cannot be less than 4
      * N can be at most 1 less than the maximum of the width and height
      * So on a 6x10 board, the minimum N value is 4 and the maximum is 9.
@@ -219,6 +219,12 @@ public class ConnectN {
      * @return true if able to set n.
      */
     private boolean setN(final int setN) {
+        if (gameStart == true) {
+            return false;
+        }
+        if (width == 0 || height == 0) {
+            return false;
+        }
         if (setN > MIN_N && (setN < MAX_WIDTH - 1 || setN < MAX_HEIGHT - 1)) {
             nValue = setN;
             return true;
