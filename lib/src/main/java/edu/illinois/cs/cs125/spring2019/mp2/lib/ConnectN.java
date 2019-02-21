@@ -83,10 +83,15 @@ public class ConnectN {
      * @param n the n value.
      * @return ConnectN
      **/
+    //probably right
     public static ConnectN create(final int width, final int height, final int n) {
-        //check stuffff    <------------------------------------
-
-        return new ConnectN(width, height, n);
+        if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
+            return null;
+        }
+        if (n < MIN_N || n > MAX_WIDTH - 1 || n > MAX_HEIGHT - 1) {
+            return null;
+        }
+        return new ConnectN();
     }
 
     /**
@@ -161,6 +166,10 @@ public class ConnectN {
      * @return boolean true if able to set width.
      */
     private boolean setWidth(final int setWidth)  {
+        // this si not righttttttttttt
+        if (!board.equals(board[0][0])) {
+            return false;
+        }
         if (width < MAX_WIDTH && width > MIN_WIDTH) {
             width = setWidth;
             if (setN(nValue) == false) {
@@ -182,6 +191,10 @@ public class ConnectN {
      * @return boolean true if able to set height.
      */
     private boolean setHeight(final int setHeight) {
+        // this si not righttttttttttt
+        if (!board.equals(board[0][0])) {
+            return false;
+        }
         if (height < MAX_HEIGHT && height > MIN_HEIGHT) {
             height = setHeight;
             if (setN(nValue) == false) {
