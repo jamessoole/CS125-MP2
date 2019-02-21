@@ -17,33 +17,24 @@ class ConnectN {
     /** minimum width. */
     private static final int MIN_WIDTH = 6;
 
-    /** th width.
-     */
-    public int width;
-    /**
-     * the height.
-     * */
+    /** th width.*/
+    private int width;
+    /*** the height.* */
     private int height;
-    /**
-     * the nvalue.
-     */
+    /*** the nvalue.*/
     private int nValue;
 
+    private Player[][] board;
 
-    /** new board with nothing initialized. */
-    ConnectN() {
-        int[][] board = new int[width][height];
-        //how to make of undef length
-    }
-    /** new board with width and height initialized.
-     * @param setWidth sets width.
-     * @param setHeight sets height. **/
-    ConnectN(final int setWidth, final int setHeight) {
-        width = setWidth;
-        height = setHeight;
-        int[][] board = new int[width][height];
-    }
+
     /** new board with height, width, and n initialized.
+     * Note that this method should not reject invalid values.
+     * attempts to set the width, height, or N value to invalid ~.
+     * value should lead to them being uninitialized.
+     *
+     * For example, new ConnectN(1, 10, 4) should return a ConnectN game with width=0,.
+     * height=10, and N=0, since 1 is an invalid width (too small) and N cannot
+     * be set until the width is defined.
      * @param setWidth sets width.
      * @param setHeight sets height.
      * @param setN sets n.**/
@@ -51,13 +42,29 @@ class ConnectN {
         width = setWidth;
         height = setHeight;
         nValue = setN;
-        int[][] board = new int[width][height];
-        //set n value??
+        board = new Player[width][height];
     }
+
+
+
+    /** new board with nothing initialized. */
+    ConnectN() {
+        board = new Player[0][0];
+    }
+
+    /** new board with width and height initialized.
+     * @param setWidth sets width.
+     * @param setHeight sets height. **/
+    ConnectN(final int setWidth, final int setHeight) {
+        width = setWidth;
+        height = setHeight;
+        board = new Player[width][height];
+    }
+
     /** new board with dimensions and n of another board.
-     * @param otherBoard   another board to copy shape and n value. **/
+     * @param otherBoard   another board of same shape and n value. **/
     ConnectN(final ConnectN otherBoard) {
-        int[][] board = new int[otherBoard.width][otherBoard.height];
+        board = new Player[otherBoard.width][otherBoard.height]; //does this work??
         nValue = otherBoard.nValue;
     }
 
@@ -70,19 +77,8 @@ class ConnectN {
      * @return ConnectN
      **/
     public static ConnectN create(final int width, final int height, final int n) {
-        /**
-        if (width > MAX_WIDTH || width < MIN_WIDTH) {
-            return null;
-        }
-        if (height > MAX_HEIGHT || height < MIN_HEIGHT) {
-            return null;
-        }
-         */
-        if (setWidth(width) == true && setHeight(height) == true && setN(n) == true) {
-            ConnectN board = new ConnectN(width, height, n);
-            return board;
-        }
-        return null;
+        ConnectN newConnect = new ConnectN(width, height, n);
+        return newConnect;
     }
 
     /**
@@ -94,11 +90,10 @@ class ConnectN {
      **/
     private static ConnectN[] createMany(final int number, final int width, final int height, final int n) {
         //like above, but many instances
-        if (setWidth(width) == true && setHeight(height) == true && setN(n) == true) {
-            for (int i = 0; i < number; i++) {
-                ConnectN board = new ConnectN(width, height, n);
-            }
-            return null;
+        for (int i = 0; i < number; i++) {
+            ConnectN newBoard = new ConnectN(width, height, n);
+        }
+        return null;
     }
 
     /**
@@ -107,7 +102,7 @@ class ConnectN {
      * @param secondBoard the board.
      * @return idk yet.
      */
-    private static boolean compareBoards(final ConnectN firstBoard, final ConnectN secondBoard) {
+    public static boolean compareBoards(final ConnectN firstBoard, final ConnectN secondBoard) {
         if (firstBoard.width == secondBoard.width && firstBoard.height == secondBoard.height) {
             if (firstBoard.nValue == secondBoard.nValue) {
                 for (int i = 0; i < width; i++) {
@@ -127,53 +122,66 @@ class ConnectN {
 
 
     /**
+     * Fails if the width is invalid,
+     * or if the game has already started.  <------------------
+     * If the new width would cause the current N value to become invalid,
+     * setWidth should reset the current N value to zero.
      * @param setWidth this set the width.
      */
     private boolean setWidth(final int setWidth) {
-        // fails if inputs invalid
         if (width < MAX_WIDTH && width > MIN_WIDTH) {
-            if (setN(nValue) == true) {
-                width = setWidth;
-                return true;
-            }   else if (setN(nValue) == false) {
+            width = setWidth;
+            if (setN(nValue) == false) {
                 nValue = 0;
-                width = setWidth;
-                return true;
             }
+            return true;
         }
         return false;
     }
+
+
+
     /**
+     * Fails if the height is invalid,
+     * or if the game has already started. <-------------
+     * If the new height would cause the current N value to become invalid,
+     * setHeight should reset the current N value to zero.
      * @param setHeight sets the height.
      */
     private boolean setHeight(final int setHeight) {
         if (height < MAX_HEIGHT && height > MIN_HEIGHT) {
-            if (setN(nValue) == true) {
-                height = setHeight;
-                return true;
-            }   else if (setN(nValue) == false) {
+            height = setHeight;
+            if (setN(nValue) == false) {
                 nValue = 0;
-                height = setHeight;
-                return true;
             }
+            return true;
         }
         return false;
     }
+
+
+
     /**
+     * N cannot be set after the game has started * <----------------------
+     * N cannot be set before the width or the height  <----------------------
+     * N cannot be less than 4
+     * N can be at most 1 less than the maximum of the width and height
+     * So on a 6x10 board, the minimum N value is 4 and the maximum is 9.
+     * On a 10x8 board, the minimum is 4 and the maximum is 9.
+     * Setting N should never affect the width or the height.
      * @param setN sste n yo.
      */
     private boolean setN(final int setN) {
-        //static is right?
-        // fails if inputs invalid
-        if (width == null || height == null)
-        if (setN < MIN_N || setN > MAX_WIDTH - 1 || setN > MAX_HEIGHT - 1) {
-            System.out.println("hey");
-        }   else {
+        if (setN > MIN_N && (setN < MAX_WIDTH - 1 || setN < MAX_HEIGHT - 1)) {
             nValue = setN;
             return true;
         }
         return false;
     }
+
+
+
+
 
 
     /**
@@ -195,13 +203,19 @@ class ConnectN {
         return nValue;
     }
 
+
+
+
+
+
+
     /**
      * @param player the player
      * @param setX column value
      * @param setY row value
      */
     public boolean setBoardAt(final Player player, final int setX, final int setY) {
-
+        return false;
     }
 
 
@@ -212,6 +226,7 @@ class ConnectN {
      */
     public boolean setBoardAt(final Player player, final int setX) {
         int x;
+        return true;
     }
 
 
@@ -222,7 +237,6 @@ class ConnectN {
         //if widht/height exist, retrun board
         //esle. return null
         return null;
-        return board;
     }
 
     /**
