@@ -7,15 +7,15 @@ package edu.illinois.cs.cs125.spring2019.mp2.lib;
  */
 public class ConnectN {
     /** maximum width. */
-    private static final int MAX_WIDTH = 16;
+    public static final int MAX_WIDTH = 16;
     /** maximum height. */
-    private static final int MAX_HEIGHT = 16;
+    public static final int MAX_HEIGHT = 16;
     /** maximum N. */
-    private static final int MIN_N = 4;
+    public static final int MIN_N = 4;
     /** minimum height. */
-    private static final int MIN_HEIGHT = 6;
+    public static final int MIN_HEIGHT = 6;
     /** minimum width. */
-    private static final int MIN_WIDTH = 6;
+    public static final int MIN_WIDTH = 6;
 
     /** th width.*/
     private int width;
@@ -25,7 +25,7 @@ public class ConnectN {
     private int nValue;
     /** the board of type player. */
     private Player[][] board;
-    /** if game has started */
+    /** if game has started.*/
     private boolean gameStart = false;
 
 
@@ -41,15 +41,28 @@ public class ConnectN {
      * @param setHeight sets height.
      * @param setN sets n.**/
     ConnectN(final int setWidth, final int setHeight, final int setN) {
-        width = setWidth;
-        height = setHeight;
-        nValue = setN;
+        width = 0;
+        height = 0;
+        nValue = 0;
+        if (setWidth <= MAX_WIDTH && setWidth >= MIN_WIDTH) {
+            width = setWidth;
+        }
+        if (setHeight <= MAX_HEIGHT && setHeight >= MIN_HEIGHT) {
+            height = setHeight;
+        }
+        if (setN >= MIN_N && (setN <= MAX_WIDTH - 1 || setN <= MAX_HEIGHT - 1)) {
+            if (setN <= height - 1 && setN <= width - 1) {
+                nValue = setN;
+            }
+        }
         board = new Player[width][height];
     }
 
     /** new board with nothing initialized. */
     ConnectN() {
-        board = new Player[0][0];
+        width = 0;
+        height = 0;
+        board = new Player[width][height];
         nValue = 0;
     }
 
@@ -57,8 +70,14 @@ public class ConnectN {
      * @param setWidth sets width.
      * @param setHeight sets height. **/
     ConnectN(final int setWidth, final int setHeight) {
-        width = setWidth;
-        height = setHeight;
+        width = 0;
+        height = 0;
+        if (setWidth <= MAX_WIDTH && setWidth >= MIN_WIDTH) {
+            width = setWidth;
+        }
+        if (setHeight <= MAX_HEIGHT && setHeight >= MIN_HEIGHT) {
+            height = setHeight;
+        }
         board = new Player[width][height];
     }
 
@@ -90,10 +109,10 @@ public class ConnectN {
         if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
             return null;
         }
-        if (n < MIN_N || n > MAX_WIDTH - 1 || n > MAX_HEIGHT - 1) {
+        if (n < MIN_N || (n > width - 1 && n > height - 1)) {
             return null;
         }
-        return new ConnectN();
+        return new ConnectN(width, height, n);
     }
 
     /**
@@ -106,8 +125,17 @@ public class ConnectN {
      * @param n n value.
      * @return ConnectN makes many instances of connectN.
      **/
-    private static ConnectN[] createMany(final int number, final int width, final int height, final int n) {
+    public static ConnectN[] createMany(final int number, final int width, final int height, final int n) {
+        if (width < MIN_WIDTH || width > MAX_WIDTH || height < MIN_HEIGHT || height > MAX_HEIGHT) {
+            return null;
+        }
+        if (n < MIN_N || (n > width - 1 && n > height - 1)) {
+            return null;
+        }
         ConnectN[] myArray = new ConnectN[number];
+        if (number == 0) {
+            return null;
+        }
         for (int i = 0; i < number; i++) {
             ConnectN newBoard = new ConnectN(width, height, n);
             myArray[i] = newBoard;
@@ -127,11 +155,17 @@ public class ConnectN {
      */
     public static boolean compareBoards(final ConnectN firstBoard, final ConnectN secondBoard) {
         if (firstBoard.width == secondBoard.width && firstBoard.height == secondBoard.height) {
-            if (firstBoard.nValue == secondBoard.nValue) {
-                for (int i = 0; i < firstBoard.width; i++) {
-                    for (int j = 0; j < firstBoard.height; j++) {
-                        if (firstBoard.board[i][j].equals(secondBoard.board[i][j])) {
-                            return true;
+            if (firstBoard.nValue == secondBoard.nValue && firstBoard != null) {
+                if (firstBoard != null && secondBoard != null) {
+                    for (int i = 0; i < firstBoard.width; i++) {
+                        for (int j = 0; j < firstBoard.height; j++) {
+                            if (firstBoard.getBoardAt(i, j).equals(secondBoard.getBoardAt(i, j))) {
+                                return true;
+                            }
+                            /**
+                             * if (firstBoard.board[i][j].equals(secondBoard.board[i][j])) {
+                             *                             return true;
+                             */
                         }
                     }
                 }
@@ -167,13 +201,13 @@ public class ConnectN {
      * @param setWidth this set the width.
      * @return boolean true if able to set width.
      */
-    private boolean setWidth(final int setWidth)  {
+    public boolean setWidth(final int setWidth)  {
         if (gameStart == true) {
             return false;
         }
-        if (width < MAX_WIDTH && width > MIN_WIDTH) {
+        if (setWidth <= MAX_WIDTH && setWidth >= MIN_WIDTH) {
             width = setWidth;
-            if (setN(nValue) == false) {
+            if (!(nValue <= width - 1 || nValue <= height - 1)) {
                 nValue = 0;
             }
             return true;
@@ -191,11 +225,11 @@ public class ConnectN {
      * @param setHeight sets the height.
      * @return boolean true if able to set height.
      */
-    private boolean setHeight(final int setHeight) {
+    public boolean setHeight(final int setHeight) {
         if (gameStart == true) {
             return false;
         }
-        if (height < MAX_HEIGHT && height > MIN_HEIGHT) {
+        if (setHeight <= MAX_HEIGHT && setHeight >= MIN_HEIGHT) {
             height = setHeight;
             if (setN(nValue) == false) {
                 nValue = 0;
@@ -218,16 +252,19 @@ public class ConnectN {
      * @param setN sste n yo.
      * @return true if able to set n.
      */
-    private boolean setN(final int setN) {
+    public boolean setN(final int setN) {
         if (gameStart == true) {
             return false;
         }
         if (width == 0 || height == 0) {
             return false;
         }
-        if (setN > MIN_N && (setN < MAX_WIDTH - 1 || setN < MAX_HEIGHT - 1)) {
-            nValue = setN;
-            return true;
+        if (setN >= MIN_N && (setN <= MAX_WIDTH - 1 || setN <= MAX_HEIGHT - 1)) {
+            if (setN <= height - 1 || setN <= width - 1) {
+                nValue = setN;
+                return true;
+            }
+            return false;
         }
         return false;
     }
@@ -255,9 +292,42 @@ public class ConnectN {
     public int getN() {
         return nValue;
     }
+    /**Return a copy of the board.
+     * Once the width and height are set, this function should not return null.
+     * Until then, it should return null.
+     * Note that this function should not expose the private board instance variable.
+     * Any changes to the board or players returned should not affect the state of the class.
+     * @return the board
+     */
+    public Player[][] getBoard() {
+        if (width == 0 || height == 0) {
+            return null;
+        }
+        Player[][] newBoard = board;
+        return newBoard;
+    }
 
 
-
+    /**Get the player at a specific board position.
+     * Should return null if the board position is invalid,
+     * if the game has not started, or if nobody has played yet at that position.
+     * Otherwise returns the player whose tile is at that position.
+     * @param getX column value
+     * @param getY row value
+     * @return the player
+     */
+    public Player getBoardAt(final int getX, final int getY) {
+        if (getX < MIN_WIDTH || getX > MAX_WIDTH || getY < MIN_HEIGHT || getY > MAX_HEIGHT) {
+            return null;
+        }
+        if (gameStart == false) {
+            return null;
+        }
+        if (board[getX][getY] == null) {
+            return null;
+        }
+        return board[getX][getY];
+    }
 
 
     //STILL TO COMPLETE
@@ -266,14 +336,47 @@ public class ConnectN {
 
 
 
-    /** YVUB.
+    /** Set the board at a specific position.
+     * Allows a player to attempt to place a tile at a specific location on the board.
+     * If the move is successful, the board should track that this player has played at
+     * this location so that it can determine a winner and prevent future invalid moves.
+     * A move should fail and return false if:
+     * any board parameters remain uninitialized, including width, height, and N
+     * the player is invalid  <-------
+     * the position is invalid for this board <-------
+     * the game has already ended
+     * This function also needs to enforce the rules of ConnectN.
+     * A tile cannot be played at a particular location if there are empty squares below it.
+     * Put another way, a tile can only be placed on top of a stack of existing tiles.
+     * If the requested location is invalid, you should return false and no tile
+     * should be added to the board.
+     * If a given play results in the game ending, future plays should fail and getWinner()
+     * should return the player that won.
+
+     Note that the first successful call to setBoardAt represents the start of game.
      * @param player the player
      * @param setX column value
      * @param setY row value
      * @return true if able to set
      */
     public boolean setBoardAt(final Player player, final int setX, final int setY) {
-        return false;
+        gameStart = true;
+        if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
+            return false;
+        }
+        if (setX < 0 || setY < 0 || setX > width || setY > height) {
+            return false;
+        }
+        if (setY == 0) {
+            board[setX][setY] = player;
+            return true;
+        }
+        if (board[setX][setY - 1] != null && setY >= 1) {
+            board[setX][setY] = player;
+            return true;
+        }
+        //run getWinner() if someone wins
+        return true;
     }
 
 
@@ -284,28 +387,26 @@ public class ConnectN {
      * @return true if able to set n.
      */
     public boolean setBoardAt(final Player player, final int setX) {
-        int x;
+        gameStart = true;
+        if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
+            return false;
+        }
+        if (setX < 0 || setX > width) {
+            return false;
+        }
+        for (int i = 0; i < height; i++) {
+            if (board[setX][i] == null) {
+                board[setX][i] = player;
+                return true;
+            }
+        }
+        //run getWinner() if someone wins
         return true;
     }
 
 
-    /**
-     * @return the board/player array?
-     */
-    private Player[][] getBoard() {
-        //if widht/height exist, retrun board
-        //esle. return null
-        return null;
-    }
 
-    /**
-     * @param getX column value
-     * @param getY row value
-     * @return the player
-     */
-    public Player getBoardAt(final int getX, final int getY) {
-        return null;
-    }
+
 
     /**
      * @return player who won
