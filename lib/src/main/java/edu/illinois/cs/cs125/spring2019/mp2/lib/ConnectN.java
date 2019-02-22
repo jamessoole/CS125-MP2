@@ -369,7 +369,10 @@ public class ConnectN {
         if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
             return false;
         }
-        if (setX < 0 || setY < 0 || setX > width || setY > height) {
+        if (setX < 0 || setY < 0 || setX > width - 1 || setY > height - 1) {
+            return false;
+        }
+        if (board[setX][setY] != null) {
             return false;
         }
         if (setY == 0) {
@@ -381,7 +384,7 @@ public class ConnectN {
             return true;
         }
         //run getWinner() if someone wins
-        return true;
+        return false;
     }
 
 
@@ -396,9 +399,12 @@ public class ConnectN {
         if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
             return false;
         }
+        System.out.println("howdy fam");
         if (setX < 0 || setX > width) {
             return false;
         }
+
+
         for (int i = 0; i < height; i++) {
             if (board[setX][i] == null) {
                 board[setX][i] = player;
@@ -406,7 +412,7 @@ public class ConnectN {
             }
         }
         //run getWinner() if someone wins
-        return true;
+        return false;
     }
 
 
