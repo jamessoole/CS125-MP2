@@ -27,6 +27,10 @@ public class ConnectN {
     private Player[][] board;
     /** if game has started.*/
     private boolean gameStart = false;
+    /** if theres a winner. */
+    private boolean someoneWon = false;
+    /** the winner. */
+    private Player winner = null;
 
 
     /** new board with height, width, and n initialized.
@@ -399,6 +403,7 @@ public class ConnectN {
         if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
             return false;
         }
+        // something wrong up here ^
         System.out.println("howdy fam");
         if (setX < 0 || setX > width) {
             return false;
@@ -412,6 +417,11 @@ public class ConnectN {
             }
         }
         //run getWinner() if someone wins
+        /**
+        if (theres a winner) {
+            winner = player;
+        }
+         */
         return false;
     }
 
@@ -423,6 +433,9 @@ public class ConnectN {
      * @return player who won
      */
     public Player getWinner() {
+        if (someoneWon == true) {
+            return winner;
+        }
         return null;
     }
 }
