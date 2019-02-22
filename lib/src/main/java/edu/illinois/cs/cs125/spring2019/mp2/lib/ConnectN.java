@@ -154,22 +154,29 @@ public class ConnectN {
      * @return idk yet.
      */
     public static boolean compareBoards(final ConnectN firstBoard, final ConnectN secondBoard) {
+        if (firstBoard == null || secondBoard == null) {
+            return false;
+        }
         if (firstBoard.width == secondBoard.width && firstBoard.height == secondBoard.height) {
             if (firstBoard.nValue == secondBoard.nValue && firstBoard != null) {
                 if (firstBoard != null && secondBoard != null) {
                     for (int i = 0; i < firstBoard.width; i++) {
                         for (int j = 0; j < firstBoard.height; j++) {
-                            if (firstBoard.getBoardAt(i, j).equals(secondBoard.getBoardAt(i, j))) {
-                                return true;
+                            if (firstBoard.getBoardAt(i, j) == null) {
+                                if (secondBoard.getBoardAt(i, j) == null) {
+                                    continue;
+                                }
+                                return false;
                             }
-                            /**
-                             * if (firstBoard.board[i][j].equals(secondBoard.board[i][j])) {
-                             *                             return true;
-                             */
+                            if (!firstBoard.getBoardAt(i, j).equals(secondBoard.getBoardAt(i, j))) {
+                                return false;
+                            }
                         }
                     }
+                    return true;
                 }
             }
+            return false;
         }
         return false;
     }
@@ -303,8 +310,7 @@ public class ConnectN {
         if (width == 0 || height == 0) {
             return null;
         }
-        Player[][] newBoard = board;
-        return newBoard;
+        return board.clone();
     }
 
 
@@ -317,7 +323,7 @@ public class ConnectN {
      * @return the player
      */
     public Player getBoardAt(final int getX, final int getY) {
-        if (getX < MIN_WIDTH || getX > MAX_WIDTH || getY < MIN_HEIGHT || getY > MAX_HEIGHT) {
+        if (getX < 0 || getX >= width || getY < 0 || getY >= height) {
             return null;
         }
         if (gameStart == false) {
@@ -352,8 +358,7 @@ public class ConnectN {
      * should be added to the board.
      * If a given play results in the game ending, future plays should fail and getWinner()
      * should return the player that won.
-
-     Note that the first successful call to setBoardAt represents the start of game.
+     * Note that the first successful call to setBoardAt represents the start of game.
      * @param player the player
      * @param setX column value
      * @param setY row value
