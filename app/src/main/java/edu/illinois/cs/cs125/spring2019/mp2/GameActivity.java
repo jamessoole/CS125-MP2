@@ -86,7 +86,6 @@ public final class GameActivity extends AppCompatActivity {
 
     /** The ConnectN instance managing this game. */
     private ConnectN game;
-
     /** The two Player instances. */
     private Player[] players;
 
