@@ -394,7 +394,7 @@ public class ConnectNTest {
     /**
      * Test getting and setting the board at a specific position.
      */
-    @Test(timeout = TEST_TIMEOUT)
+    @Test
     @SuppressWarnings("checkstyle:methodlength")
     public void testGetAndSetBoard() {
         final String validSet = "Set at this position should succeed";

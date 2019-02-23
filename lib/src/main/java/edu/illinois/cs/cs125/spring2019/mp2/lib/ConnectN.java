@@ -370,6 +370,9 @@ public class ConnectN {
      */
     public boolean setBoardAt(final Player player, final int setX, final int setY) {
         gameStart = true;
+        if (winner != null) {
+            return false;
+        }
         if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
             return false;
         }
@@ -400,16 +403,21 @@ public class ConnectN {
      */
     public boolean setBoardAt(final Player player, final int setX) {
         gameStart = true;
+        if (winner != null) {
+            return false;
+        }
         if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
             return false;
         }
         // something wrong up here ^
         System.out.println("howdy fam");
-        if (setX < 0 || setX > width) {
+        if (setX < 0 || setX > width - 1) {
             return false;
         }
 
-
+        if (board == null) {
+            board = new Player[width][height];
+        }
         for (int i = 0; i < height; i++) {
             if (board[setX][i] == null) {
                 board[setX][i] = player;
@@ -433,8 +441,44 @@ public class ConnectN {
      * @return player who won
      */
     public Player getWinner() {
-        if (someoneWon == true) {
-            return winner;
+        int count = 0;
+        // checks vertical
+        if (gameStart == false) {
+            return null;
+        }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (board[i][j] != null) {
+                    count++;
+                } else {
+                    count = 0;
+                }
+                if (count == nValue) {
+                    Player thisPlayer = board[i][j];
+                    thisPlayer.addScore();
+                    winner = thisPlayer;
+                    gameStart = false;
+                    return thisPlayer;
+                }
+            }
+        }
+        //check horizontal
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                if (board[i][j] != null) {
+                    count++;
+                } else {
+                    count = 0;
+                }
+                if (count == nValue) {
+                    // addScore
+                    Player thisPlayer = board[i][j];
+                    thisPlayer.addScore();
+                    winner = thisPlayer;
+                    gameStart = false;
+                    return thisPlayer;
+                }
+            }
         }
         return null;
     }
