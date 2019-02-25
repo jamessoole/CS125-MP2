@@ -221,6 +221,9 @@ public class ConnectN {
             if (!(nValue <= width - 1 || nValue <= height - 1)) {
                 nValue = 0;
             }
+            if (height != 0) {
+                board = new Player[width][height];
+            }
             return true;
         }
         return false;
@@ -244,6 +247,9 @@ public class ConnectN {
             height = setHeight;
             if (setN(nValue) == false) {
                 nValue = 0;
+            }
+            if (width != 0) {
+                board = new Player[width][height];
             }
             return true;
         }
@@ -311,10 +317,28 @@ public class ConnectN {
      * @return the board
      */
     public Player[][] getBoard() {
+        if (board == null) {
+            return null;
+        }
         if (width == 0 || height == 0) {
             return null;
         }
-        return board.clone();
+        Player[][] boardTwo = new Player[width][height];
+
+        System.out.println(width);
+        System.out.println(board.length);
+        System.out.println(board[0].length);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (board[i][j] == null) {
+                    boardTwo[i][j] = null;
+                }   else {
+                    Player place = new Player(board[i][j]);
+                    boardTwo[i][j] = place;
+                }
+            }
+        }
+        return boardTwo;
     }
 
 
@@ -330,12 +354,17 @@ public class ConnectN {
         if (getX < 0 || getX >= width || getY < 0 || getY >= height) {
             return null;
         }
+        if (height == 0 || width == 0) {
+            return null;
+        }
+        /**
         if (gameStart == false) {
             return null;
         }
         if (board[getX][getY] == null) {
             return null;
         }
+         */
         return board[getX][getY];
     }
 
@@ -383,9 +412,10 @@ public class ConnectN {
         }
         if (setY == 0) {
             board[setX][setY] = player;
+            gameStart = true;
             return true;
         }
-        if (board[setX][setY - 1] != null && setY >= 1) {
+        if (board[setX][setY - 1] != null) {
             board[setX][setY] = player;
             return true;
         }
@@ -401,6 +431,7 @@ public class ConnectN {
      * @return true if able to set n.
      */
     public boolean setBoardAt(final Player player, final int setX) {
+        /**
         gameStart = true;
         if (winner != null) {
             return false;
@@ -429,7 +460,23 @@ public class ConnectN {
             winner = player;
         }
          */
-        return false;
+
+        if (height == 0 || width == 0 || setX < 0 || setX > width - 1) {
+            return false;
+        }
+        if (board[setX][height - 1] != null) {
+            return false;
+        }
+        for (int i = height - 2; i > -1; i--) {
+            if (board[setX][i] != null) {
+                board[setX][i + 1] = player;
+                gameStart = true;
+                return true;
+            }
+        }
+        board[setX][0] = player;
+        gameStart = true;
+        return true;
     }
 
 

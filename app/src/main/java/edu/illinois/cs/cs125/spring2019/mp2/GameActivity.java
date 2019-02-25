@@ -305,7 +305,6 @@ public final class GameActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * whether or not its clicked.
      * @param x the x position
