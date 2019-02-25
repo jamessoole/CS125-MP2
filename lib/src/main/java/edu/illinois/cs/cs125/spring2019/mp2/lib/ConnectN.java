@@ -340,7 +340,6 @@ public class ConnectN {
     }
 
 
-    //STILL TO COMPLETE
 
 
 
@@ -462,15 +461,16 @@ public class ConnectN {
                 }
             }
         }
+        int tally = 0;
         //check horizontal
         for (int j = 0; j < height; j++) {
             for (int i = 0; i < width; i++) {
                 if (board[i][j] != null) {
-                    count++;
+                    tally++;
                 } else {
-                    count = 0;
+                    tally = 0;
                 }
-                if (count == nValue) {
+                if (tally == nValue) {
                     // addScore
                     Player thisPlayer = board[i][j];
                     thisPlayer.addScore();

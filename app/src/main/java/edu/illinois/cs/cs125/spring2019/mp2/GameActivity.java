@@ -92,6 +92,21 @@ public final class GameActivity extends AppCompatActivity {
     /** The list of moves. Used to store the game state so that it can be reconstituted if the Activity is restarted. */
     private ArrayList<Integer> successfulPlays = new ArrayList<>();
 
+
+    /**
+     * whether or not its clicked.
+     * @param x the x position
+     * @param y the y position
+     * @return a boolean
+     */
+    public boolean tileClicked(final int x, final int y) {
+        if (tryPlayAt(x, y)) {
+            updateDisplay();
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
