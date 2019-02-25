@@ -44,7 +44,7 @@ public class ConnectN {
      * @param setWidth sets width.
      * @param setHeight sets height.
      * @param setN sets n.**/
-    ConnectN(final int setWidth, final int setHeight, final int setN) {
+    public ConnectN(final int setWidth, final int setHeight, final int setN) {
         width = 0;
         height = 0;
         nValue = 0;
@@ -63,7 +63,7 @@ public class ConnectN {
     }
 
     /** new board with nothing initialized. */
-    ConnectN() {
+    public ConnectN() {
         width = 0;
         height = 0;
         board = new Player[width][height];
@@ -73,7 +73,7 @@ public class ConnectN {
     /** new board with width and height initialized.
      * @param setWidth sets width.
      * @param setHeight sets height. **/
-    ConnectN(final int setWidth, final int setHeight) {
+    public ConnectN(final int setWidth, final int setHeight) {
         width = 0;
         height = 0;
         if (setWidth <= MAX_WIDTH && setWidth >= MIN_WIDTH) {
@@ -87,7 +87,7 @@ public class ConnectN {
 
     /** new board with dimensions and n of another board.
      * @param otherBoard   another board of same shape and n value. **/
-    ConnectN(final ConnectN otherBoard) {
+    public ConnectN(final ConnectN otherBoard) {
         width = otherBoard.width;
         height = otherBoard.height;
         board = new Player[width][height];
