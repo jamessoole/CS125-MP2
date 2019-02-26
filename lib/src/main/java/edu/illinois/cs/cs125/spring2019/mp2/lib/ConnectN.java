@@ -431,36 +431,6 @@ public class ConnectN {
      * @return true if able to set n.
      */
     public boolean setBoardAt(final Player player, final int setX) {
-        /**
-        gameStart = true;
-        if (winner != null) {
-            return false;
-        }
-        if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
-            return false;
-        }
-        // something wrong up here ^
-        System.out.println("howdy fam");
-        if (setX < 0 || setX > width - 1) {
-            return false;
-        }
-
-        if (board == null) {
-            board = new Player[width][height];
-        }
-        for (int i = 0; i < height; i++) {
-            if (board[setX][i] == null) {
-                board[setX][i] = player;
-                return true;
-            }
-        }
-        //run getWinner() if someone wins
-        /**
-        if (theres a winner) {
-            winner = player;
-        }
-         */
-
         if (height == 0 || width == 0 || setX < 0 || setX > width - 1) {
             return false;
         }
