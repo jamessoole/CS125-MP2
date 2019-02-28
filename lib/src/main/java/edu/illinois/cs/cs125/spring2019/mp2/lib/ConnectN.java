@@ -453,14 +453,15 @@ public class ConnectN {
 
 
 
-    /**
+    /**Return the winner of the game, or null if the game has not ended.
      * @return player who won
      */
     public Player getWinner() {
         int count = 0;
         // checks vertical
-        if (gameStart == false) {
-            return null;
+
+        if (winner != null) {
+            return winner;
         }
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -473,7 +474,6 @@ public class ConnectN {
                     Player thisPlayer = board[i][j];
                     thisPlayer.addScore();
                     winner = thisPlayer;
-                    gameStart = false;
                     return thisPlayer;
                 }
             }
@@ -492,7 +492,6 @@ public class ConnectN {
                     Player thisPlayer = board[i][j];
                     thisPlayer.addScore();
                     winner = thisPlayer;
-                    gameStart = false;
                     return thisPlayer;
                 }
             }
