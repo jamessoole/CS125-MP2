@@ -27,6 +27,8 @@ public class ConnectN {
     private Player[][] board;
     /** if game has started.*/
     private boolean gameStart = false;
+    /** if game ended.*/
+    private boolean gameEnd = false;
     /** if theres a winner. */
     private boolean someoneWon = false;
     /** the winner. */
@@ -54,19 +56,18 @@ public class ConnectN {
         if (setHeight <= MAX_HEIGHT && setHeight >= MIN_HEIGHT) {
             height = setHeight;
         }
-        if (setN >= MIN_N && (setN <= MAX_WIDTH - 1 || setN <= MAX_HEIGHT - 1)) {
-            if (setN <= height - 1 && setN <= width - 1) {
-                nValue = setN;
-            }
+        if (setN >= MIN_N && (setN <= Math.max(width, height) - 1)) {
+            nValue = setN;
         }
-        board = new Player[width][height];
+        if (width == 0 || height == 0) {
+            nValue = 0;
+        }
     }
 
     /** new board with nothing initialized. */
     public ConnectN() {
         width = 0;
         height = 0;
-        board = new Player[width][height];
         nValue = 0;
     }
 
@@ -82,7 +83,6 @@ public class ConnectN {
         if (setHeight <= MAX_HEIGHT && setHeight >= MIN_HEIGHT) {
             height = setHeight;
         }
-        board = new Player[width][height];
     }
 
     /** new board with dimensions and n of another board.
@@ -90,7 +90,6 @@ public class ConnectN {
     public ConnectN(final ConnectN otherBoard) {
         width = otherBoard.width;
         height = otherBoard.height;
-        board = new Player[width][height];
         nValue = otherBoard.nValue;
     }
 
@@ -221,9 +220,11 @@ public class ConnectN {
             if (!(nValue <= width - 1 || nValue <= height - 1)) {
                 nValue = 0;
             }
+            /**
             if (height != 0) {
                 board = new Player[width][height];
             }
+             */
             return true;
         }
         return false;
@@ -248,9 +249,11 @@ public class ConnectN {
             if (setN(nValue) == false) {
                 nValue = 0;
             }
+            /**
             if (width != 0) {
                 board = new Player[width][height];
             }
+             */
             return true;
         }
         return false;
@@ -317,17 +320,17 @@ public class ConnectN {
      * @return the board
      */
     public Player[][] getBoard() {
-        if (board == null) {
-            return null;
-        }
         if (width == 0 || height == 0) {
             return null;
         }
+        if (board == null) {
+            board = new Player[width][height];
+        }
         Player[][] boardTwo = new Player[width][height];
 
-        System.out.println(width);
-        System.out.println(board.length);
-        System.out.println(board[0].length);
+        //System.out.println(width);
+        //System.out.println(board.length);
+        //System.out.println(board[0].length);
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (board[i][j] == null) {
@@ -351,7 +354,7 @@ public class ConnectN {
      * @return the player
      */
     public Player getBoardAt(final int getX, final int getY) {
-        if (getX < 0 || getX >= width || getY < 0 || getY >= height) {
+        if (getX < 0 || getX >= width || getY < 0 || getY >= height || board == null) {
             return null;
         }
         if (height == 0 || width == 0) {
@@ -397,15 +400,19 @@ public class ConnectN {
      * @return true if able to set
      */
     public boolean setBoardAt(final Player player, final int setX, final int setY) {
-        gameStart = true;
-        if (winner != null) {
+        if (gameEnd == true) {
             return false;
         }
-        if (width == 0 || height == 0 || nValue == 0 || gameStart == false || player == null) {
+        if (width == 0 || height == 0 || nValue == 0 || player == null) {
             return false;
         }
         if (setX < 0 || setY < 0 || setX > width - 1 || setY > height - 1) {
+            System.out.println("width" + width);
+            System.out.println("height" + height);
             return false;
+        }
+        if (board == null) {
+            board = new Player[width][height];
         }
         if (board[setX][setY] != null) {
             return false;
@@ -417,6 +424,7 @@ public class ConnectN {
         }
         if (board[setX][setY - 1] != null) {
             board[setX][setY] = player;
+            gameStart = true;
             return true;
         }
         //run getWinner() if someone wins
@@ -431,8 +439,14 @@ public class ConnectN {
      * @return true if able to set n.
      */
     public boolean setBoardAt(final Player player, final int setX) {
+        if (gameEnd == true) {
+            return false;
+        }
         if (height == 0 || width == 0 || setX < 0 || setX > width - 1) {
             return false;
+        }
+        if (board == null) {
+            board = new Player[width][height];
         }
         if (board[setX][height - 1] != null) {
             return false;
@@ -459,42 +473,52 @@ public class ConnectN {
     public Player getWinner() {
         int count = 0;
         // checks vertical
-
-        if (winner != null) {
+        /**
+        if (gameEnd == true) {
             return winner;
         }
+         */
+        if (board == null) {
+            return null;
+        }
+        //vertical
+
         for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (board[i][j] != null) {
+            for (int j = 0; j < height - 1; j++) {
+                if (board[i][j] != null && board[i][j].equals(board[i][j + 1])) {
                     count++;
+                    if (count == nValue - 1) {
+                        winner = board[i][j];
+                        winner.addScore();
+                        gameEnd = true;
+                        System.out.println("vetrical winner");
+                        return winner;
+                    }
                 } else {
                     count = 0;
                 }
-                if (count == nValue) {
-                    Player thisPlayer = board[i][j];
-                    thisPlayer.addScore();
-                    winner = thisPlayer;
-                    return thisPlayer;
-                }
             }
+            count = 0;
         }
         int tally = 0;
         //check horizontal
         for (int j = 0; j < height; j++) {
-            for (int i = 0; i < width; i++) {
-                if (board[i][j] != null) {
+            for (int i = 0; i < width - 1; i++) {
+                if (board[i][j] != null && board[i][j].equals(board[i + 1][j])) {
                     tally++;
+                    if (tally == nValue - 1) {
+                        // addScore
+                        winner = board[i][j];
+                        winner.addScore();
+                        gameEnd = true;
+                        System.out.println("horoz winner");
+                        return winner;
+                    }
                 } else {
                     tally = 0;
                 }
-                if (tally == nValue) {
-                    // addScore
-                    Player thisPlayer = board[i][j];
-                    thisPlayer.addScore();
-                    winner = thisPlayer;
-                    return thisPlayer;
-                }
             }
+            count = 0;
         }
         return null;
     }
