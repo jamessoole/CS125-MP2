@@ -460,11 +460,13 @@ public final class GameActivity extends AppCompatActivity {
             // make winnerlabel viewable, change its text, change its color
             winnerLabel.setText(winner.getName() + " wins!");
             winnerLabel.setVisibility(View.VISIBLE);
+            final int one = -13594576;
+            final int two = -13618976;
             if (winner == players[0]) {
-                winnerLabel.setTextColor(playerColorIds[0]);
+                winnerLabel.setTextColor(one);
             }
             if (winner == players[1]) {
-                winnerLabel.setTextColor(playerColorIds[1]);
+                winnerLabel.setTextColor(two);
             }
         }
 
