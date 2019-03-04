@@ -331,17 +331,19 @@ public final class GameActivity extends AppCompatActivity {
         }   else {
             //games over
             //no players visible
-            for (View i : toPlayLabels) {
-                i.setVisibility(View.GONE);
+            for (View v : toPlayLabels) {
+                v.setVisibility(View.GONE);
             }
             // make winnerlabel viewable, change its text, change its color
             winnerLabel.setText(winner.getName() + " wins!");
             winnerLabel.setVisibility(View.VISIBLE);
+            final int one = -13594576;
+            final int two = -13618976;
             if (winner == players[0]) {
-                winnerLabel.setTextColor(playerColorIds[0]);
+                winnerLabel.setTextColor(one);
             }
             if (winner == players[1]) {
-                winnerLabel.setTextColor(playerColorIds[1]);
+                winnerLabel.setTextColor(two);
             }
         }
     }
