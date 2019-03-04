@@ -324,20 +324,24 @@ public final class GameActivity extends AppCompatActivity {
     public void setWinnerLabel() {
         Player winner = game.getWinner();
         if (winner == null) {
+            //next player is visible, winner label and other player are'nt
             toPlayLabels[playerToMove].setVisibility(View.VISIBLE);
             toPlayLabels[getPlayerNotMoving()].setVisibility(View.GONE);
             winnerLabel.setVisibility(View.GONE);
         }   else {
+            //games over
+            //no players visible
             for (View i : toPlayLabels) {
                 i.setVisibility(View.GONE);
             }
-            winnerLabel.setVisibility(View.VISIBLE);
+            // make winnerlabel viewable, change its text, change its color
             winnerLabel.setText(winner.getName() + "wins!");
+            winnerLabel.setVisibility(View.VISIBLE);
             if (winner.equals(players[0]) == true) {
-                winnerLabel.setTextColor(getResources().getColor(playerColorIds[0]));
+                winnerLabel.setTextColor(playerColorIds[0]);
             }
             if (winner.equals(players[1]) == true) {
-                winnerLabel.setTextColor(getResources().getColor(playerColorIds[1]));
+                winnerLabel.setTextColor(playerColorIds[1]);
             }
 
         }
