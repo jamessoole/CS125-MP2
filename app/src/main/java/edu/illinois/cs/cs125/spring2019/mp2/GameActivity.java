@@ -318,9 +318,32 @@ public final class GameActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    /**
+     */
+    public void update() {
+        Player winner = game.getWinner();
+        if (winner == null) {
+            toPlayLabels[playerToMove].setVisibility(View.VISIBLE);
+            toPlayLabels[getPlayerNotMoving()].setVisibility(View.GONE);
+            winnerLabel.setVisibility(View.GONE);
+        }   else {
+            for (View i : toPlayLabels) {
+                i.setVisibility(View.GONE);
+            }
+            winnerLabel.setVisibility(View.VISIBLE);
+            winnerLabel.setText(winner.getName() + "wins!");
+            if (winner.equals(players[0]) == true) {
+                winnerLabel.setTextColor(getResources().getColor(playerColorIds[0]));
+            }
+            if (winner.equals(players[1]) == true) {
+                winnerLabel.setTextColor(getResources().getColor(playerColorIds[1]));
+            }
+
+        }
+    }
     /**
      * Gets the array index for the player who is not currently to move.
-     *
      * @return 0 if it's Player 2's turn now, 1 otherwise.
      */
     int getPlayerNotMoving() {
