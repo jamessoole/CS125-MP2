@@ -320,7 +320,7 @@ public final class GameActivity extends AppCompatActivity {
     }
 
     /**
-     */
+     * i made this randomly, it should be in update display
     public void setWinnerLabel() {
         Player winner = game.getWinner();
         if (winner == null) {
@@ -337,16 +337,17 @@ public final class GameActivity extends AppCompatActivity {
             // make winnerlabel viewable, change its text, change its color
             winnerLabel.setText(winner.getName() + " wins!");
             winnerLabel.setVisibility(View.VISIBLE);
-            final int one = -13594576;
-            final int two = -13618976;
             if (winner == players[0]) {
-                winnerLabel.setTextColor(one);
+                winnerLabel.setTextColor(playerColorIds[0]);
             }
             if (winner == players[1]) {
-                winnerLabel.setTextColor(two);
+                winnerLabel.setTextColor(playerColorIds[1]);
             }
         }
     }
+     */
+
+
     /**
      * Gets the array index for the player who is not currently to move.
      * @return 0 if it's Player 2's turn now, 1 otherwise.
@@ -443,6 +444,7 @@ public final class GameActivity extends AppCompatActivity {
              * Adjust the UI so that the player to play next is visible and make sure that the winner label is not
              * visible.
              */
+            winnerLabel.setVisibility(View.GONE);
             toPlayLabels[playerToMove].setVisibility(View.VISIBLE);
             toPlayLabels[getPlayerNotMoving()].setVisibility(View.GONE);
         } else {
@@ -454,6 +456,15 @@ public final class GameActivity extends AppCompatActivity {
              */
             for (View v : toPlayLabels) {
                 v.setVisibility(View.GONE);
+            }
+            // make winnerlabel viewable, change its text, change its color
+            winnerLabel.setText(winner.getName() + " wins!");
+            winnerLabel.setVisibility(View.VISIBLE);
+            if (winner == players[0]) {
+                winnerLabel.setTextColor(playerColorIds[0]);
+            }
+            if (winner == players[1]) {
+                winnerLabel.setTextColor(playerColorIds[1]);
             }
         }
 
