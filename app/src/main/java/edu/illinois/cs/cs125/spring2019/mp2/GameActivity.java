@@ -321,7 +321,7 @@ public final class GameActivity extends AppCompatActivity {
 
     /**
      */
-    public void update() {
+    public void setWinnerLabel() {
         Player winner = game.getWinner();
         if (winner == null) {
             toPlayLabels[playerToMove].setVisibility(View.VISIBLE);
